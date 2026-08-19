@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حلول التدريبات الإثرائية - مادة الحوسبة وتكنولوجيا المعلومات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0d9488;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --correct-bg: #dcfce7;
+            --correct-border: #22c55e;
+            --correct-text: #15803d;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --secondary: #14b8a6;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --correct-bg: #064e3b;
+            --correct-border: #10b981;
+            --correct-text: #6ee7b7;
+            --incorrect-bg: #7f1d1d;
+            --incorrect-border: #f87171;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a, #0d9488);
+            color: white;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        /* Controls Section */
+        .controls-card {
+            background: var(--card-bg);
+            padding: 1.25rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn, .tab-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn.active, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Tabs Navigation */
+        .tabs-nav {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .tabs-nav .tab-btn {
+            white-space: nowrap;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .stat-item h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .stat-item span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+        }
+
+        /* Question Cards */
+        .question-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .question-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .badge {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--primary-light);
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Options for MCQ */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .option-btn {
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            text-align: right;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary-light);
+        }
+
+        .option-btn.selected-correct {
+            background: var(--correct-bg);
+            border-color: var(--correct-border);
+            color: var(--correct-text);
+            font-weight: bold;
+        }
+
+        .option-btn.selected-incorrect {
+            background: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: var(--incorrect-border);
+        }
+
+        /* Direct Answer Box for non-MCQ */
+        .toggle-answer-btn {
+            margin-top: 1rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .answer-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--correct-bg);
+            border: 1px solid var(--correct-border);
+            color: var(--correct-text);
+            border-radius: 8px;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .answer-box.show {
+            display: block;
+        }
+
+        /* Table styling for comparison / structured data */
+        .q-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .q-table th, .q-table td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .q-table th {
+            background: var(--primary);
+            color: white;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+        }
+
+        @media print {
+            .theme-toggle, .controls-card, .tabs-nav, .stats-bar, .toggle-answer-btn {
+                display: none !important;
+            }
+            .answer-box {
+                display: block !important;
+            }
+            body {
+                background: white;
+                color: black;
+            }
+            .question-card {
+                box-shadow: none;
+                border: 1px solid #ccc;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="theme-toggle" onclick="toggleTheme()">🌓 الوضع المظلم/المضيء</button>
+        <h1>التدريبات الإثرائية التفاعلية - الصف الثامن</h1>
+        <p> مادة الحوسبة وتكنولوجيا المعلومات | أسئلة وإجابات تفاعلية شاملة | أسألكم الدعاء </p>
+    </header>
+
+    <div class="container">
+
+        <!-- Tabs for PDF Documents -->
+        <div class="tabs-nav" id="docTabs">
+            <button class="tab-btn active" onclick="switchDoc('all')">الكل (جميع الوحدات)</button>
+            <button class="tab-btn" onclick="switchDoc('doc1')">1️⃣ منتصف الفصل الأول</button>
+            <button class="tab-btn" onclick="switchDoc('doc2')">2️⃣ نهاية الفصل الأول</button>
+            <button class="tab-btn" onclick="switchDoc('doc3')">3️⃣ منتصف الفصل الثاني</button>
+            <button class="tab-btn" onclick="switchDoc('doc4')">4️⃣ نهاية الفصل الثاني</button>
+        </div>
+
+        <!-- Score & Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <h4>إجمالي الأسئلة المعروضة</h4>
+                <span id="totalQuestionsCount">0</span>
+            </div>
+            <div class="stat-item">
+                <h4>أسئلة تم إجابتها</h4>
+                <span id="answeredCount">0</span>
+            </div>
+            <div class="stat-item">
+                <h4>الإجابات الصحيحة</h4>
+                <span id="correctCount">0</span>
+            </div>
+        </div>
+
+        <!-- Controls & Filters -->
+        <div class="controls-card">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="بحث في الأسئلة أو المفاهيم..." oninput="filterQuestions()">
+            </div>
+            <div class="filter-group">
+                <button class="filter-btn active" onclick="filterType('all')">جميع الأنواع</button>
+                <button class="filter-btn" onclick="filterType('mcq')">اختر الإجابة</button>
+                <button class="filter-btn" onclick="filterType('fill')">أكمل / صحح</button>
+                <button class="filter-btn" onclick="filterType('essay')">أسئلة مقالية وتعاريف</button>
+            </div>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer"></div>
+
+    </div>
+
+    <script>
+        // Full Question Data Extracted from PDFs (Excluding Page 1 cover & standard header/footer of each file)
+        const questionsData = [
+            // ==================== FILE 1: 1111.pdf (منتصف الفصل الأول) ====================
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'الخطوة الأولى لصناعة الفيلم:',
+                options: ['القصة المصورة', 'تجزئة المشهد', 'السيناريو', 'الحوار'],
+                answer: 'السيناريو',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'الخطوة الثانية لصناعة الفيلم:',
+                options: ['الأحداث', 'تجزئة المشهد', 'القصة المصورة', 'الحوار'],
+                answer: 'تجزئة المشهد',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'للملف اسم وامتداد، وامتداد wav هو امتداد لـ:',
+                options: ['ملف صور', 'لعبة', 'ملف فيديو', 'ملف صوتي'],
+                answer: 'ملف صوتي',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'كل ملف وسائط متعددة لديه:',
+                options: ['اسم وامتداد', 'القصة المصورة', 'اسمين وامتدادين', 'اسمين وامتداد'],
+                answer: 'اسم وامتداد',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'أحد امتدادات ملفات الصور والتي تدعم الشفافية:',
+                options: ['GIF', 'TIF', 'JPG', 'PNG'],
+                answer: 'PNG',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'أحد امتدادات ملفات الصوت:',
+                options: ['.avi', '.wav', '.jpg', 'tif'],
+                answer: '.wav',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'أحد امتدادات ملفات الفيديو:',
+                options: ['.mp4', '.mp3', '.jpg', 'wav'],
+                answer: '.mp4',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'تقنيات ضغط الفيديو تسمى:',
+                options: ['التشفير', 'القصص', 'الترميز', 'رسوم'],
+                answer: 'الترميز',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'القصة في السيناريو مجزأة إلى:',
+                options: ['مشاهد وكل مشهد ينقسم الى لقطات', 'لقطات', 'أفلام', 'لقطات وكل لقطة تنقسم الى أحداث'],
+                answer: 'مشاهد وكل مشهد ينقسم الى لقطات',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'ملفات الصوت المضغوطة تكون:',
+                options: ['أصغر في الحجم وتفقد شيئا من جودتها', 'أكبر في الحجم', 'أكبر في الحجم ولا تفقد شيئا من جودتها', 'أكبر في الحجم وتفقد بعض من جودتها'],
+                answer: 'أصغر في الحجم وتفقد شيئا من جودتها',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'ملفات الصوت الغير المضغوطة تكون:',
+                options: ['أصغر في الحجم', 'أصغر في الحجم وتفقد شيئا من جودتها', 'أكبر في الحجم وتفقد بعض من جودتها', 'أكبر في الحجم ولا تفقد شيئا من جودتها'],
+                answer: 'أكبر في الحجم ولا تفقد شيئا من جودتها',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'أحد امتدادات ملفات الصور:',
+                options: ['.avi', '.mp3', '.wav', '.png'],
+                answer: '.png',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'mcq',
+                title: 'من عناصر السيناريو:',
+                options: ['الأحداث', 'المخرج', '.wav', 'القصة المصورة'],
+                answer: 'الأحداث',
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'fill',
+                title: 'أكمل الفراغ بالعبارات المناسبة:',
+                content: `• القصة المصورة (Storyboard): عرضاً تفصيلياً توضيحياً للفيلم بالكامل.<br>
+• تجزئة المشهد: هو كيفية ظهور كل مشهد بشكل تفصيلي.<br>
+• الترميز (Codecs): هي طريقة لضغط الفيديو لتجعله أصغر حجماً.<br>
+• AVI: هو أحد تنسيقات تداخل الصوت والفيديو.<br>
+• عناصر السيناريو: الأبطال، الأحداث، الحوار.`,
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'fill',
+                title: 'صحح العبارات الآتية باستبدال ما تحته خط:',
+                content: `1. JPG هو امتداد صور يتميز بخاصية الحركة. 👈 <b>الإجابة الصحيحة: GIF</b><br>
+2. WAV هو أكثر تنسيقات الصوت المضغوطة شيوعاً. 👈 <b>الإجابة الصحيحة: MP3</b><br>
+3. حجم الملف الأصلي أصغر من حجم الملف المضغوط. 👈 <b>الإجابة الصحيحة: أكبر</b><br>
+4. gif هو امتداد صورة يتميز بخاصية الثبات. 👈 <b>الإجابة الصحيحة: الحركة</b>`,
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'essay',
+                title: 'أذكر التعريف المناسب لكل مما يلي:',
+                content: `• <b>الأبطال:</b> هم الشخصيات الأساسية في الفيلم.<br>
+• <b>المشهد:</b> الحدث الذي يحصل في مكان ووقت محدد.<br>
+• <b>الحوار:</b> يوضح الحوار كل ما تقوله الشخصيات.<br>
+• <b>الحدث:</b> يكتب بالزمن المضارع ليصف ما يحدث في لحظة معينة.<br>
+• <b>تنسيق من تنسيقات ملفات الصوت المضغوطة:</b> MP3 أو WMA.`,
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'essay',
+                title: 'قارن بين ملفات الصوت المضغوطة وغير المضغوطة:',
+                content: `<table class="q-table">
+                    <tr><th>وجه المقارنة</th><th>ملفات الصوت المضغوطة</th><th>ملفات الصوت غير المضغوطة</th></tr>
+                    <tr><td><b>المساحة</b></td><td>أصغر في الحجم (صغيرة)</td><td>تأخذ حيزاً كبيراً من المساحة (كبيرة)</td></tr>
+                    <tr><td><b>الجودة</b></td><td>تفقد بعض من جودتها (قليلة)</td><td>جودة عالية (عالية)</td></tr>
+                </table>`,
+                badge: 'منتصف الفصل الأول'
+            },
+            {
+                doc: 'doc1',
+                type: 'essay',
+                title: 'وضح الخاصية التي تمتاز بها الصور من نوع GIF:',
+                content: 'تتميز بالحركة من أجل إنشاء صور متحركة.',
+                badge: 'منتصف الفصل الأول'
+            },
+
+            // ==================== FILE 2: 2222.pdf (نهاية الفصل الأول) ====================
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'المرحلة الرابعة لتصميم اللعبة:',
+                options: ['الاختبار', 'التنفيذ', 'تصميم', 'التخطيط والبحث'],
+                answer: 'الاختبار',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'أثناء عملية تنفيذ اللعبة ينبغي استخدام:',
+                options: ['الفئة المستهدفة', 'النموذج الأولي كقالب', 'الاختبار', 'التحديات'],
+                answer: 'النموذج الأولي كقالب',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'المرحلة الأولى لتصميم اللعبة:',
+                options: ['التخطيط والبحث', 'الاختبار', 'تصميم', 'التنفيذ'],
+                answer: 'التخطيط والبحث',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'هو عبارة عن مجموعة محددة مسبقا من الأوامر البرمجية:',
+                options: ['الحدث', 'تكرار', 'كائن', 'الدوال'],
+                answer: 'الدوال',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'من سمات اللعبة الناجحة:',
+                options: ['التنفيذ', 'الملفات الصوتية', 'أن يكون لها هدف', 'تنوع الزخارف والألوان'],
+                answer: 'أن يكون لها هدف',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'من ميزات استخدام البرمجة المرئية:',
+                options: ['الملفات الصوتية فقط', 'التحديات', 'سهولة انشاء البرامج وتعديلها', 'قواعد اللعبة'],
+                answer: 'سهولة انشاء البرامج وتعديلها',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'من الميزات الثانوية التي نضيفها لتصميم اللعبة:',
+                options: ['آلية تسجيل النقاط', 'تصميم مستويات صعوبة اللعبة', 'تطبيق ضوابط التحكم باللعبة', 'تصاميم وزخارف اللعبة'],
+                answer: 'تصاميم وزخارف اللعبة',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'Alice هي بيئة برمجية قائمة على:',
+                options: ['النماذج', 'اللبنات البرمجية', 'القصص', 'رسوم'],
+                answer: 'اللبنات البرمجية',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'أي تفاعل للمستخدم مع البرنامج ويتم الاستجابة له عن طريق تنفيذ إجراء:',
+                options: ['الحدث', 'التحديات', 'الدالة', 'الوظائف'],
+                answer: 'الحدث',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'من مميزات برنامج Alice:',
+                options: ['النماذج', 'لا يوجد', 'الحدث', 'تعزيز مهارات التفكير العلمي والمنطقي'],
+                answer: 'تعزيز مهارات التفكير العلمي والمنطقي',
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'mcq',
+                title: 'ملفات العالم الافتراضي لـ Alice يتم حفظها بالامتداد:',
+                options: ['*.q2w', '*.pptx', '*.docx', '*.mp4'],
+                answer: '*.a2w', // Correcting standard extension variant in text (*.a2w / *.q2w)
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'fill',
+                title: 'أكمل الفراغ بالإجابة المناسبة:',
+                content: `• <b>الاختبار:</b> هي مرحلة من مراحل تصميم اللعبة للتأكد من أنها تعمل بشكل سليم.<br>
+• في Alice يتم استخدام طريقة <b>(السحب والإفلات)</b> لإنشاء التأثيرات المتحركة.<br>
+• <b>(الكائن)</b> يمثل مكون اللعبة من شخصيات وأماكن.<br>
+• <b>(الدوال)</b> هي عبارة عن مجموعة محددة من الأوامر البرمجية.`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'fill',
+                title: 'صحح العبارات الآتية باستبدال ما تحته خط:',
+                content: `1. من الميزات الأساسية في مرحلة تنفيذ اللعبة عمل تصاميم وزخارف اللعبة. 👈 <b>الميزات الثانوية</b><br>
+2. اللعبة ذات التصنيف T (TEEN) مناسبة لجميع الفئات. 👈 <b>E (EVERYONE)</b><br>
+3. في مرحلة الاختبار نقوم بصياغة الفكرة العامة للعبة. 👈 <b>التخطيط والبحث</b><br>
+4. من سلبيات برنامج Alice إتاحة بيئة افتراضية ثلاثية الأبعاد. 👈 <b>مميزات</b><br>
+5. (الأحداث) هي عبارة عن مجموعة محددة من الأوامر البرمجية. 👈 <b>الدوال</b>`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'essay',
+                title: 'عدّد مراحل تصميم اللعبة (Design Process):',
+                content: `1. التخطيط والبحث (Research and Planning).<br>
+2. تصميم النموذج الأولي (Prototype).<br>
+3. التنفيذ (Implementation).<br>
+4. الاختبار (Testing).`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'essay',
+                title: 'أذكر سمات اللعبة الناجحة:',
+                content: `• أن يكون لها هدف.<br>
+• أن يكون لها قواعد.<br>
+• أن تكون مثيرة للتحدي.<br>
+• أن تستخدم نوعاً مناسباً من وسائل التفاعل.`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'essay',
+                title: 'عدّد مميزات برنامج Alice:',
+                content: `1. تعزيز مهارات التفكير العلمي والمنطقي ومهارات حل المشكلات.<br>
+2. تعلم أساسيات كتابة برامج الحاسوب ومعرفة مفاهيم لغات البرمجة.<br>
+3. إتاحة بيئة افتراضية ثلاثية الأبعاد لإنشاء الألعاب بشكل يحاكي الواقع.`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'essay',
+                title: 'وضح المقصود برموز تصنيفات الـ ESRB:',
+                content: `• <b>e / EC:</b> أن اللعبة مناسبة لفئة الطفولة المبكرة.<br>
+• <b>RP (Rating Pending):</b> أن اللعبة قيد المراجعة وفي طور التصنيف.<br>
+• <b>EVERYONE (E):</b> أن اللعبة مناسبة لجميع الفئات.<br>
+• <b>TEEN (T):</b> أن اللعبة مناسبة لفئة المراهقين من سن 13 سنة فما فوق.`,
+                badge: 'نهاية الفصل الأول'
+            },
+            {
+                doc: 'doc2',
+                type: 'essay',
+                title: 'فسّر الهدف من مرحلة الاختبار في تصميم اللعبة:',
+                content: 'للتأكد من أن اللعبة تعمل بشكل سليم ولاكتشاف الأخطاء والمشاكل التقنية.',
+                badge: 'نهاية الفصل الأول'
+            },
+
+            // ==================== FILE 3: 3333.pdf (منتصف الفصل الثاني) ====================
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'الطرائق الثلاث الأساسية لتقليص النفايات الإلكترونية هي:',
+                options: ['إعادة التدوير', 'خفض الاستهلاك - إعادة الاستخدام - إعادة التدوير', 'خفض الاستهلاك - إعادة التدوير', 'المعلومات الاستهلاك'],
+                answer: 'خفض الاستهلاك - إعادة الاستخدام - إعادة التدوير',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'هي الأجهزة الإلكترونية المستهلكة أو المنتهية الصلاحية والتي تلوث البيئة:',
+                options: ['إعادة التدوير Recycle', 'خفض الاستهلاك Reduce', 'النفايات الإلكترونية - E-waste', 'إعادة الاستخدام Reuse'],
+                answer: 'النفايات الإلكترونية - E-waste',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'رمز مصطلح 3R يشير إلى:',
+                options: ['Reduce - Reuse', 'Reduce', 'Reduce - Reuse - Recycle', 'Reuse'],
+                answer: 'Reduce - Reuse - Recycle',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'يمكن استخدام قرص صلب قديم:',
+                options: ['كقرص صلب خارجي', 'فقط لإعادة التدوير', 'كجهاز للطاقة', 'كجهاز لتوفير الطاقة'],
+                answer: 'كقرص صلب خارجي',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'يمكن تقليل النفايات من خلال:',
+                options: ['بيع الأجهزة أو التبرع بها مادامت صالحة', 'فقط لإعادة التدوير', 'الاحتفاظ بجميع الأجهزة لدينا', 'كجهاز لتوفير الطاقة'],
+                answer: 'بيع الأجهزة أو التبرع بها مادامت صالحة',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'من المشاكل الصحية لوضعية الجلوس غير الصحيحة:',
+                options: ['آلام الظهر', 'عدم وضوح الرؤية', 'العزلة الاجتماعية', 'الصداع'],
+                answer: 'آلام الظهر',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'من المشاكل الصحية لإجهاد العين:',
+                options: ['آلام الظهر', 'عدم وضوح الرؤية', 'العزلة الاجتماعية', 'الصداع'],
+                answer: 'عدم وضوح الرؤية',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'من المشاكل الصحية للاستخدام المفرط للفأرة:',
+                options: ['آلام الظهر', 'العزلة الاجتماعية', 'آلام وتورم وتصلب في المفاصل', 'الصداع'],
+                answer: 'آلام وتورم وتصلب في المفاصل',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'من التأثيرات النفسية نتيجة الاستخدام المفرط للتكنولوجيا:',
+                options: ['آلام الظهر', 'الأرق', 'العزلة الاجتماعية', 'الصداع'],
+                answer: 'الأرق',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'من التأثيرات الاجتماعية للاستخدام المفرط للتكنولوجيا:',
+                options: ['آلام الظهر', 'عدم وضوح الرؤية', 'العزلة الاجتماعية', 'الصداع'],
+                answer: 'العزلة الاجتماعية',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'يعرض البيانات خلال فترة زمنية معينة:',
+                options: ['مخطط', 'المخطط البياني الدائري المجوف', 'مخطط تكراري', 'المخطط البياني الخطي'],
+                answer: 'المخطط البياني الخطي',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'يعرض البيانات على شكل حلقة:',
+                options: ['مخطط', 'المخطط البياني الدائري المجوف', 'مخطط تكراري', 'المخطط البياني الخطي'],
+                answer: 'المخطط البياني الدائري المجوف',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'المخطط البياني المبعثر يعرض:',
+                options: ['العلاقة بين مجموعات من البيانات المعروضة على محورين', 'كيفية تغيير قيمة في معدلات مختلفة', 'البيانات على شكل حلقة', 'البيانات على شكل عمود'],
+                answer: 'العلاقة بين مجموعات من البيانات المعروضة على محورين',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'الحاسوب المناسب للمستخدم العادي للقيام باستخدام البرامج الأساسية هو:',
+                options: ['حاسوب مكتبي أو محمول بمواصفات عالية', 'حاسوب مكتبي أو محمول بقدرات اعتيادية', 'حاسوب مكتبي وشاشة كبيرة', 'هاتف محمول'],
+                answer: 'حاسوب مكتبي أو محمول بقدرات اعتيادية',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'mcq',
+                title: 'الحاسوب المناسب لرجل الأعمال هو:',
+                options: ['حاسوب مكتبي أو محمول بمواصفات عالية جداً', 'حاسوب مكتبي أو محمول بقدرات اعتيادية', 'حاسوب محمول ببطارية تدوم طويلاً', 'هاتف محمول'],
+                answer: 'حاسوب محمول ببطارية تدوم طويلاً',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'fill',
+                title: 'أكمل الفراغ بالعبارة المناسبة:',
+                content: `• خفض الاستهلاك (Reduce): التقليل من استهلاك الأجهزة والأدوات الإلكترونية للطاقة.<br>
+• التوتر العصبي هو من (الآثار النفسية) للاستخدام المفرط للتكنولوجيا.<br>
+• للحماية من إصابات اليد ضع الفأرة (أقرب ما يمكن إلى لوحة المفاتيح).<br>
+• إجهاد العين يسبب مشاكل وآلام وجفاف في العين.<br>
+• أثر يسبب توتر عصبي وقلق واكتئاب: (الآثار النفسية).<br>
+• العزلة الاجتماعية تسبب التوحد.<br>
+• مخطط بياني يعرض النسب المئوية: (المخطط الدائري المجوف).<br>
+• مخطط بياني يعرض التغييرات خلال فترة زمنية معينة: (المخطط الخطي / المساحي).<br>
+• الحاسوب المناسب للمحترف الألعاب: (حاسوب مكتبي بشاشة كبيرة).`,
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'fill',
+                title: 'صحح العبارات الآتية باستبدال ما تحته خط:',
+                content: `1. إعادة التدوير هو استخدام الجهاز أو بيعه أو التبرع به مادام صالحاً للاستعمال. 👈 <b>إعادة الاستخدام (Reuse)</b><br>
+2. للاستخدام السليم للفأرة ولوحة المفاتيح أكتب بعنف وقوة. 👈 <b>بلطف وهدوء</b><br>
+3. للحماية من إجهاد العين التأكد من أن الشاشة قريبة جداً. 👈 <b>ليست قريبة أو بعيدة جداً</b><br>
+4. عدم وضوح الرؤية من آثار وضعية الجلوس غير الصحيحة. 👈 <b>إجهاد العين / آلام الظهر</b><br>
+5. المخطط المبعثر يعرض البيانات على شكل حلقة. 👈 <b>الدائري المجوف</b><br>
+6. الجودة: هي عامل مهم عند شراء الجهاز وابحث دائماً عن الدعم المجاني. 👈 <b>خدمات ما بعد البيع</b>`,
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'essay',
+                title: 'ما المقصود بإعادة الاستخدام (Reuse)؟',
+                content: 'استخدام الجهاز أو بيعه أو التبرع به مادام صالحاً للاستعمال.',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'essay',
+                title: 'أذكر هدفين لاستراتيجية التخلص من النفايات في دولة قطر:',
+                content: '1. إعادة التدوير وتقليل النفايات.<br>2. توليد الطاقة من النفايات.',
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'essay',
+                title: 'وضح طرق الحماية من المشاكل الصحية المتعلقة بوضعية الجلوس غير الصحيحة:',
+                content: `• يجب أن تكون شاشة الحاسوب في مستوى منخفض قليلاً عن مستوى العينين.<br>
+• يجب استخدام كرسي مناسب بحيث يكون العمود الفقري على شكله الطبيعي.<br>
+• يجب وضع القدمين على الأرض أو على مسند القدمين.<br>
+• أخذ استراحة على فترات متقاربة بالتحرك قليلاً.`,
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'essay',
+                title: 'أذكر الطرق الوقائية لإجهاد العين عند استخدام الحاسوب:',
+                content: `• تأكد من أن الشاشة ليست قريبة جداً من وجهك.<br>
+• قلل التباين والسطوع من شاشة جهاز الحاسوب.<br>
+• يجب أن تكون إضاءة الغرفة أكثر سطوعاً بـ 3 مرات من سطوع الشاشة.<br>
+• أخذ استراحة دورية أثناء العمل على الحاسوب.`,
+                badge: 'منتصف الفصل الثاني'
+            },
+            {
+                doc: 'doc3',
+                type: 'essay',
+                title: 'تعاريف هامة (النفايات - المخططات - الجودة):',
+                content: `• <b>خفض الاستهلاك (Reduce):</b> التقليل من استهلاك الأجهزة الإلكترونية للطاقة.<br>
+• <b>النفايات الإلكترونية E-waste:</b> الأجهزة الإلكترونية المستهلكة أو المنتهية الصلاحية والتي تلوث البيئة.<br>
+• <b>إعادة التدوير (Recycle):</b> تفكيك الأجهزة واسترداد المكونات لاستخدامها في تصنيع منتجات جديدة.<br>
+• <b>المخطط المبعثر:</b> يعرض العلاقة بين مجموعات من البيانات المعروضة على المحورين.<br>
+• <b>المخطط المساحي:</b> تعبئة المخطط باللون لعرض التغييرات خلال فترة زمنية معينة.<br>
+• <b>الجودة:</b> أن يكون المنتج ذو كفاءة عالية في الصنع والاستخدام لضمان عمله لفترة طويلة.`,
+                badge: 'منتصف الفصل الثاني'
+            },
+
+            // ==================== FILE 4: 4444.pdf (نهاية الفصل الثاني) ====================
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'يتم فيها ترجمة الخوارزميات والمخططات الانسيابية إلى مقاطع برمجية:',
+                options: ['مرحلة الاختبار', 'مرحلة التحليل', 'مرحلة التنفيذ', 'مرحلة التصميم'],
+                answer: 'مرحلة التنفيذ',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'هي سلسلة من المراحل التي يتم العمل من خلالها لتطوير مشروع جديد:',
+                options: ['البرمجة التشاركية', 'مرحلة التصميم', 'مرحلة التحليل', 'دورة حياة النظام'],
+                answer: 'دورة حياة النظام',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'هي أن يقوم شخصان أو أكثر بالعمل معا لإنجاز المهمة:',
+                options: ['البرمجة التشاركية', 'مرحلة التصميم', 'مرحلة التحليل', 'دورة حياة النظام'],
+                answer: 'البرمجة التشاركية',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'مرحلة يتم فيها التأكد من عمل البرنامج بشكل صحيح بعد الانتهاء من البرمجة:',
+                options: ['مرحلة الاختبار', 'مرحلة التحليل', 'مرحلة التنفيذ', 'مرحلة التصميم'],
+                answer: 'مرحلة الاختبار',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'يتم فيها جمع احتياجات المستخدم وتطلعاته حول النظام الجديد:',
+                options: ['مرحلة الاختبار', 'مرحلة التحليل', 'مرحلة التنفيذ', 'مرحلة التصميم'],
+                answer: 'مرحلة التحليل',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'ينشئ البرامج من خلال تصميم المخطط الانسيابي والخوارزمية:',
+                options: ['الفاحص', 'المحلل', 'مرحلة التحليل', 'المبرمج'],
+                answer: 'المبرمج',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'يقوم بتعريف المشكلة وتحليل المتطلبات:',
+                options: ['المحلل', 'المبرمج', 'مرحلة الفاحص', 'دورة حياة النظام'],
+                answer: 'المحلل',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'الذكاء الاصطناعي يهتم بـ:',
+                options: ['إنشاء آلات ذكية تعمل وغير قادرة على الكلام', 'إنشاء آلات ذكية تعمل ولا تتفاعل', 'إنشاء آلات ذكية تعمل وتتفاعل مع البشر', 'إنشاء آلات تتعرف على الأشياء ولا تحل المشكلات'],
+                answer: 'إنشاء آلات ذكية تعمل وتتفاعل مع البشر',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'من تحديات الذكاء الاصطناعي:',
+                options: ['اتخاذ القرارات بنسبة أخطاء أقل', 'التكلفة العالية', 'القيام بالمهام الخطرة', 'القدرة على التوقع العلمي'],
+                answer: 'التكلفة العالية',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'تبرمج آلات الذكاء الاصطناعي بخوارزميات لتساعدها على:',
+                options: ['الإدراك والتوقع والحركة', 'التوقع', 'الإدراك', 'الحركة'],
+                answer: 'الإدراك والتوقع والحركة',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'من تطبيقات الذكاء الاصطناعي في السيارات ذاتية القيادة:',
+                options: ['المصابيح الأمامية', 'تشغيل الموسيقى فقط', 'مكابح الطوارئ ABS', 'زيادة حجم المحرك'],
+                answer: 'مكابح الطوارئ ABS',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'التعلم الآلي (Machine Learning) هو:',
+                options: ['التطبيق العملي القائم على الذكاء الاصطناعي', 'أنظمة برمجية ثابتة', 'الذكاء الاصطناعي', 'إنشاء آلات غير قادرة على التفاعل'],
+                answer: 'التطبيق العملي القائم على الذكاء الاصطناعي',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'mcq',
+                title: 'المصطلح الإنجليزي الصحيح لـ الذكاء الاصطناعي هو:',
+                options: ['Machine Learning', 'Artificial Intelligence', 'Learning', 'Artificial'],
+                answer: 'Artificial Intelligence',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'fill',
+                title: 'أكمل الفراغات بالكلمات المناسبة:',
+                content: `1. من مراحل دورة النظام مرحلة <b>التنفيذ</b> يتم فيها إنشاء الخوارزميات والمخططات.<br>
+2. من مراحل دورة النظام مرحلة <b>التقييم</b> يتم فيها تقييم البرنامج وتحديد فرص التطوير.<br>
+3. من مهام الفاحص <b>التحقق من الخوارزمية والمخطط الانسيابي</b>.<br>
+4. مرحلة التحليل هي من مهام <b>محلل النظام</b>.<br>
+5. في مرحلة <b>الاختبار</b> نحتاج للتأكد من عمل البرنامج بشكل صحيح.<br>
+6. <b>المبرمج</b> يقوم بتصميم الخوارزمية وانشاء البرامج.<br>
+7. من مسؤوليات <b>قائد الفريق</b> تنظيم أدوار الفريق.<br>
+8. <b>مرحلة التحليل</b> يتم فيها جمع احتياجات المستخدم وتطلعاته.<br>
+9. <b>الذكاء الاصطناعي</b> يتضمن الإدراك والتوقع والحركة.`,
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'fill',
+                title: 'صحح العبارات الآتية باستبدال ما تحته خط:',
+                content: `1. البرمجة التشاركية تحتوي على خمسة مراحل: تحليل، تصميم، تنفيذ، تقييم واختبار. 👈 <b>دورة حياة النظام</b><br>
+2. مرحلة الاختبار هي عملية يتم فيها تقييم البرنامج وتحديد فرص التطوير. 👈 <b>التقييم</b><br>
+3. مرحلة التحليل يتم فيها ترجمة الخوارزميات إلى مقاطع برمجية. 👈 <b>التنفيذ</b><br>
+4. الذكاء الآلي هو التطبيق العملي القائم على الذكاء الاصطناعي. 👈 <b>التعلم الآلي</b><br>
+5. من تطبيقات الحاسوب السيارات ذاتية القيادة. 👈 <b>الذكاء الاصطناعي</b><br>
+6. من تحديات الذكاء الاصطناعي اتخاذ القرارات بنسبة أخطاء أقل. 👈 <b>مميزات</b><br>
+7. من تطبيقات التعلم الآلي السيارات ذاتية القيادة. 👈 <b>التشخيص الطبي</b>`,
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'essay',
+                title: 'ما المقصود بالبرمجة التشاركية؟',
+                content: 'هي أن يقوم شخصان أو أكثر بالعمل معا لإنجاز المهمة المطلوبة منهم (البرمجة).',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'essay',
+                title: 'وضح ما تعرفه عن مرحلة التقييم في دورة حياة النظام:',
+                content: 'يتم فيها تقييم البرنامج وتحديد فرص التطوير المناسبة واعتمادها.',
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'essay',
+                title: 'أذكر مسؤوليتين لقائد الفريق:',
+                content: `1. تنظيم أدوار الفريق.<br>
+2. القيام بإيجاد الحلول للمشاكل المشتركة.<br>
+3. الاحتفاظ بملاحظات عن كل مشروع وإعداد الخطط لاستخدام الفريق.`,
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'essay',
+                title: 'أذكر مهام كل من المحلل والمبرمج:',
+                content: `<b>مهام المحلل:</b> تعريف المشكلة، تحليل المتطلبات، اقتراح البرامج المناسبة.<br>
+<b>مهام المبرمج:</b> تصميم الخوارزمية، تصميم المخطط الانسيابي، إنشاء البرامج.`,
+                badge: 'نهاية الفصل الثاني'
+            },
+            {
+                doc: 'doc4',
+                type: 'essay',
+                title: 'أذكر تطبيقات وعوامل الذكاء الاصطناعي والتعلم الآلي:',
+                content: `• <b>تطبيقات الذكاء الاصطناعي:</b> صناعة السيارات، السيارات ذاتية القيادة، الطاهي الآلي.<br>
+• <b>العوامل الثلاثة للذكاء الاصطناعي:</b> الإدراك (Recognition)، التوقع (Prediction)، الحركة (Action).<br>
+• <b>تعريف التعلم الآلي (Machine Learning):</b> جزء أساسي من الذكاء الاصطناعي يتيح للبرامج أن تصبح أكثر دقة في توقع النتائج.`,
+                badge: 'نهاية الفصل الثاني'
+            }
+        ];
+
+        let currentDocFilter = 'all';
+        let currentTypeFilter = 'all';
+        let answeredQuestions = new Set();
+        let correctAnswersCount = 0;
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+            container.innerHTML = '';
+
+            let filtered = questionsData.filter(q => {
+                const matchDoc = (currentDocFilter === 'all' || q.doc === currentDocFilter);
+                const matchType = (currentTypeFilter === 'all' || q.type === currentTypeFilter);
+                const matchSearch = q.title.toLowerCase().includes(searchVal) || 
+                                    (q.content && q.content.toLowerCase().includes(searchVal)) ||
+                                    (q.options && q.options.some(o => o.toLowerCase().includes(searchVal)));
+                return matchDoc && matchType && matchSearch;
+            });
+
+            document.getElementById('totalQuestionsCount').innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="no-results">لم يتم العثور على أسئلة تطابق البحث أو الفلتر المحدد.</div>';
+                return;
+            }
+
+            filtered.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'question-card';
+
+                let html = `
+                    <div class="question-header">
+                        <div class="question-title">${index + 1}. ${q.title}</div>
+                        <span class="badge">${q.badge}</span>
+                    </div>
+                `;
+
+                if (q.type === 'mcq') {
+                    html += `<div class="options-grid">`;
+                    q.options.forEach(opt => {
+                        html += `<button class="option-btn" onclick="checkMCQ(this, '${opt.replace(/'/g, "\'")}', '${q.answer.replace(/'/g, "\'")}', ${index})">
+                            <span>⚪</span> ${opt}
+                        </button>`;
+                    });
+                    html += `</div>`;
+                } else {
+                    html += `
+                        <button class="toggle-answer-btn" onclick="toggleAnswer(this)">إظهار الإجابة / النموذج</button>
+                        <div class="answer-box">${q.content}</div>
+                    `;
+                }
+
+                qCard.innerHTML = html;
+                container.appendChild(qCard);
+            });
+        }
+
+        function checkMCQ(btn, selected, correct, qIndex) {
+            const parent = btn.closest('.options-grid');
+            const buttons = parent.querySelectorAll('.option-btn');
+
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('selected-correct', 'selected-incorrect');
+            });
+
+            if (selected === correct) {
+                btn.classList.add('selected-correct');
+                btn.querySelector('span').innerText = '✅';
+                if (!answeredQuestions.has(qIndex)) {
+                    correctAnswersCount++;
+                }
+            } else {
+                btn.classList.add('selected-incorrect');
+                btn.querySelector('span').innerText = '❌';
+                // Highlight correct one
+                buttons.forEach(b => {
+                    if (b.innerText.includes(correct)) {
+                        b.classList.add('selected-correct');
+                        b.querySelector('span').innerText = '✅';
+                    }
+                });
+            }
+
+            if (!answeredQuestions.has(qIndex)) {
+                answeredQuestions.add(qIndex);
+                document.getElementById('answeredCount').innerText = answeredQuestions.size;
+                document.getElementById('correctCount').innerText = correctAnswersCount;
+            }
+        }
+
+        function toggleAnswer(btn) {
+            const answerBox = btn.nextElementSibling;
+            if (answerBox.classList.contains('show')) {
+                answerBox.classList.remove('show');
+                btn.innerText = 'إظهار الإجابة / النموذج';
+            } else {
+                answerBox.classList.add('show');
+                btn.innerText = 'إخفاء الإجابة';
+            }
+        }
+
+        function switchDoc(docId) {
+            currentDocFilter = docId;
+            document.querySelectorAll('#docTabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderQuestions();
+        }
+
+        function filterType(type) {
+            currentTypeFilter = type;
+            document.querySelectorAll('.filter-group .filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderQuestions();
+        }
+
+        function filterQuestions() {
+            renderQuestions();
+        }
+
+        function toggleTheme() {
+            const current = document.body.getAttribute('data-theme');
+            if (current === 'dark') {
+                document.body.removeAttribute('data-theme');
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        // Initial render
+        renderQuestions();
+    </script>
+</body>
+</html>
